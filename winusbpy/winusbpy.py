@@ -207,20 +207,20 @@ class WinUsbPy(object):
     def write(self, pipe_id, write_buffer):
         write_buffer = create_string_buffer(write_buffer)
         written = c_ulong(0)
-        self.api.exec_function_winusb(WinUsb_WritePipe, self.handle_winusb[self._index], c_ubyte(pipe_id), write_buffer,
+        self.api.exec_function_winusb(WinUsb_WritePipe, self.handle_winusb, c_ubyte(pipe_id), write_buffer,
                                       c_ulong(len(write_buffer) - 1), byref(written), None)
         return written.value
 
     def read(self, pipe_id, length_buffer):
         read_buffer = create_string_buffer(length_buffer)
         read = c_ulong(0)
-        result = self.api.exec_function_winusb(WinUsb_ReadPipe, self.handle_winusb[self._index], c_ubyte(pipe_id),
+        result = self.api.exec_function_winusb(WinUsb_ReadPipe, self.handle_winusb, c_ubyte(pipe_id),
                                                read_buffer, c_ulong(length_buffer), byref(read), None)
         if result != 0:
             if read.value != length_buffer:
                 return read_buffer[:read.value]
             else:
-                return read_buffer
+                return read_buffer[:length_buffer]
         else:
             return None
 

@@ -208,7 +208,7 @@ def get_setupapi_functions(setupapi):
     return setupapi_dict
 
 
-def is_device(vid, pid, path, name=None):
+def is_device(name, vid, pid, path):
     if name and name.lower() == path.lower():
         return True
     if vid and pid:
